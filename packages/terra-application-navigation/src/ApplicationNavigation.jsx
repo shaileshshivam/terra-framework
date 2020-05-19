@@ -298,7 +298,7 @@ const ApplicationNavigation = ({
         navigationItems={navigationItems}
         navigationRenderFunction={navigationRenderFunction}
         activeNavigationItemKey={activeNavigationItemKey}
-        onSelectNavigationItem={generateFocusMain(onSelectNavigationItem)}
+        onSelectNavigationItem={onSelectNavigationItem}
         userConfig={userConfig}
         onSelectSkipToContent={focusMainContent}
         notifications={notifications}
@@ -312,6 +312,16 @@ const ApplicationNavigation = ({
       />
     );
   }
+ 
+  function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+
+  const prevActiveNavigationItemKey  = usePrevious(activeNavigationItemKey);
 
   /**
    * This effect is used to execute callbacks from the drawer and popup
@@ -327,6 +337,14 @@ const ApplicationNavigation = ({
       closeMenuCallbackRef.current();
       closeMenuCallbackRef.current = undefined;
     }
+
+    if(prevActiveNavigationItemKey !== activeNavigationItemKey)
+    {
+      window.requestAnimationFrame(() => {
+        focusMainContent();
+      });
+    }
+
   });
 
   /**
