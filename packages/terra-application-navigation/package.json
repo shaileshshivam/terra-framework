@@ -23,13 +23,13 @@
   },
   "homepage": "https://github.com/cerner/terra-framework#readme",
   "devDependencies": {
-    "terra-application": "https://github.com/cerner/terra-application#testing-screen-orientation"
+    "terra-application": "https://github.cerner.com/terra/terra-snapshots/blob/master/terra-application/testing-screen-orientation/terra-application.tgz?raw=true"
   },
   "peerDependencies": {
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-intl": "^2.4.0",
-    "terra-application": "https://github.com/cerner/terra-application#testing-screen-orientation"
+    "terra-application": "https://github.cerner.com/terra/terra-snapshots/blob/master/terra-application/testing-screen-orientation/terra-application.tgz?raw=true"
   },
   "dependencies": {
     "classnames": "^2.2.5",
