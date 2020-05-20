@@ -141,12 +141,6 @@ const utilityItems = [
 // TODO: remove terra-application after it is incorporated into dev-site for themes or themes are co-located
 const StatedDemo = () => {
   const [activeKey, setActiveKey] = useState(navigationItems[0].key);
-  /* eslint-disable no-alert */
-  const PickItemSelection = (key, metaData) => {
-    alert(`itemKey: ${key}, metaData: ${metaData.test}`);
-    setActiveKey(key);
-  };
-  /* eslint-enable no-alert */
   const [lastActionKey, setLastActionKey] = useState(null);
 
   function handleItemSelection(key) {
@@ -162,7 +156,7 @@ const StatedDemo = () => {
         onSelectExtensionItem={handleItemSelection}
         navigationItems={navigationItems}
         activeNavigationItemKey={activeKey}
-        onSelectNavigationItem={PickItemSelection}
+        onSelectNavigationItem={key => setActiveKey(key)}
         utilityItems={utilityItems}
         onSelectUtilityItem={handleItemSelection}
         onSelectSettings={() => handleItemSelection('settings')}

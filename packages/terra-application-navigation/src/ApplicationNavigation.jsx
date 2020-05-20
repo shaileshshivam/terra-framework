@@ -196,9 +196,7 @@ const ApplicationNavigation = ({
   function generateFocusMain(wrappedFunction) {
     return (...args) => {
       wrappedFunction(...args);
-      window.requestAnimationFrame(() => {
-        focusMainContent();
-      });
+      focusMainContent();
     };
   }
 
@@ -312,7 +310,16 @@ const ApplicationNavigation = ({
       />
     );
   }
- 
+  
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      focusMainContent();
+    }, 0);
+  }, [focusMainContent]);
+
+
+
+  /*
   function usePrevious(value) {
     const ref = useRef();
     useEffect(() => {
@@ -322,6 +329,7 @@ const ApplicationNavigation = ({
   }
 
   const prevActiveNavigationItemKey  = usePrevious(activeNavigationItemKey);
+  */
 
   /**
    * This effect is used to execute callbacks from the drawer and popup
@@ -337,14 +345,14 @@ const ApplicationNavigation = ({
       closeMenuCallbackRef.current();
       closeMenuCallbackRef.current = undefined;
     }
-
+    /*
     if(prevActiveNavigationItemKey !== activeNavigationItemKey)
     {
       window.requestAnimationFrame(() => {
         focusMainContent();
       });
     }
-
+     */
   });
 
   /**
