@@ -3,6 +3,8 @@ Changelog
 
 Unreleased
 ----------
+### Breaking Changes
+* Consume latest major version bump of terra-avatar
 
 5.37.0 - (June 9, 2020)
 ------------------
