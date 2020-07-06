@@ -23,6 +23,7 @@ class DefaultThemeProvider extends React.Component {
     let themeSwitcher;
 
     function supportsCSSVars() {
+      /* eslint-disable-next-line compat/compat */
       return window.CSS && window.CSS.supports && window.CSS.supports('(--fake-var: 0)');
     }
 
