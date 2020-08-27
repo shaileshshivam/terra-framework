@@ -24,7 +24,7 @@ const TabPage = ({
         {insertToolbar}
       </div>
       <div className="scroll" tabIndex="0">
-        {render({  })}
+        {render({})}
       </div>
     </div>
   );

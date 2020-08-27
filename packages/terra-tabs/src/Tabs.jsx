@@ -98,11 +98,11 @@ const Tabs = ({
       role="none"
     >
       <div className={cx('header')}>
-        <TabBar tabData={tabData} />
+        <TabBar tabData={tabData} /> // this has role="tabList" 
         <div className={cx('title')}>{selectedTab.label}</div>
       </div>
       <div className={cx('body')}>
-        <TabPane
+        <TabPane // this has role "tabPane"
           key={selectedTab.associatedPaneId}
           id={selectedTab.associatedPaneId}
           associatedTabId={selectedTab.id}

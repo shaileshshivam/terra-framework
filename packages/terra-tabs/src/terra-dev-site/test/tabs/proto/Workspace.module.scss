@@ -1,0 +1,69 @@
+:local {
+  .space {
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 320px;
+
+    button {
+      padding: 5px;
+    }
+  }
+
+  .header,
+  .toolbar {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    padding: 5px 10px;
+    width: 100%;
+  }
+
+  .toolbar {
+    justify-content: flex-end;
+  }
+
+  .fill {
+    align-items: flex-end;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .tab {
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    display: inline-block;
+    flex: 0 0 auto;
+    padding: 5px 10px;
+  }
+
+  .menu {
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .end {
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .content {
+    border: 1px solid #ccc;
+    height: 100%;
+    flex: 1 1 auto;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+  }
+}

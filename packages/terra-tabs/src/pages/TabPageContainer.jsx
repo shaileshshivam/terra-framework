@@ -10,7 +10,7 @@ const propTypes = {
   children: PropTypes.node,
 };
 
-const TabPage = ({
+const TabPageContainer = ({
   activePageKey,
   children,
 }) => {
@@ -95,6 +95,6 @@ const TabPage = ({
   );
 };
 
-TabPage.propTypes = propTypes;
+TabPageContainer.propTypes = propTypes;
 
-export default TabPage;
+export default TabPageContainer;
