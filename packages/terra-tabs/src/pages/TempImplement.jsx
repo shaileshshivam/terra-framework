@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import TabPageContainer from './TabPageContainer';
@@ -19,6 +19,7 @@ const TempImplement = ({
   id,
   ...customProps
 }) => {
+  const [activePageKey, setActivePageKey] = useState('summary-1');
 
   return (
     <TabPageContainer
