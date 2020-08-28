@@ -5,6 +5,7 @@ import { KEY_SPACE, KEY_RETURN } from 'keycode-js';
 import { handleArrows } from './_TabUtils';
 
 import styles from './Tabs.module.scss';
+import { IntlProvider } from 'react-intl';
 
 const cx = classNames.bind(styles);
 
@@ -123,19 +124,40 @@ const Tab = ({
   }
 
   return (
-    <div
-      {...customProps}
-      {...attributes}
-      id={id}
-      aria-controls={associatedPaneId}
-      role="tab"
-      className={paneClassNames}
-      title={label}
+    <Tabs
+      id
+      activeTab
+      onRequestActivate
     >
-      {customDisplay}
-      {customDisplay ? null : icon}
-      {customDisplay || isIconOnly ? null : <span className={cx('label')}>{label}</span>}
-    </div>
+      <Tab
+        // context provider for { panelId, tabId }
+        // possible persistent prop?
+        tabKey
+        label={IntlProvider.getSTring(MyTabPage.titleKey})}
+        icon
+        isIconOnly
+        metaData
+        render={() => { // MyTabPage
+          <Panel
+            // derive from context { panelId, tabId }
+            toolBar
+            children
+          >
+        }}
+      >
+    // <div
+    //   {...customProps}
+    //   {...attributes}
+    //   id={id}
+    //   aria-controls={associatedPaneId}
+    //   role="tab"
+    //   className={paneClassNames}
+    //   title={label}
+    // >
+    //   {customDisplay}
+    //   {customDisplay ? null : icon}
+    //   {customDisplay || isIconOnly ? null : <span className={cx('label')}>{label}</span>}
+    // </div>
   );
 };
 

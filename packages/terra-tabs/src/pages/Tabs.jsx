@@ -78,15 +78,15 @@ const TabPageContainer = ({
             portalElement.style.position = 'relative';
             portalElement.style.height = '100%';
             portalElement.style.width = '100%';
-            portalElement.id = `workspace-${child.props.pageKey}`;
-            workspacePortalsRef.current[child.props.pageKey] = {
+            portalElement.id = `${props.id}-${child.props.tabKey}`;
+            workspacePortalsRef.current[child.props.tabKey] = {
               element: portalElement,
             };
           }
 
           return (
             React.cloneElement(child, {
-              isActive: child.props.pageKey === activePageKey, portalElement,
+              isActive: child.props.tabKey === activePageKey, portalElement,
             })
           );
         })}
