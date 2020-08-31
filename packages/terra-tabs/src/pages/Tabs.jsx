@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import CollapsibleTabs from './_CollapsibleTabs';
 import styles from './Tabs.module.scss';
 
 const cx = classNames.bind(styles);
@@ -44,22 +45,26 @@ const TabPageContainer = ({
     setActivePageKey(metaData.key);
   };
 
-  let activeTab;
   const tabData = React.Children.map(child => {
-    if (child.props.pageKey == activePageKey) {
-      activeTab = { title: child.props.title};
-    }
-
     return {
-      id: child.props.id,
+      id: `${id}-${child.props.pageKey}`,
       title: child.props.title,
       icon: child.props.icon,
       count: child.props.count,
+      isSelected: child.props.pageKey == activePageKey,
       onSelect: onTabSelect,
       metaData: { key: child.props.pageKey },
     };
   });
 
+  const tabsClassNames = cx([
+    'tabs',
+    { 'tab-fill': tabFill },
+    { 'body-fill': fill },
+    'structural',
+    customProps.className,
+  ]);
+  
   return (
     <div
       {...customProps}
@@ -67,8 +72,7 @@ const TabPageContainer = ({
       role="none"
     >
       <div className={cx('header')}>
-        <TabBar tabData={tabData} />
-        <div className={cx('title')}>{activeTab.label}</div>
+        <CollapsibleTabs tabData={tabData} />
       </div>
       <div className={cx('body')} ref={workspaceRef}>
         {isInitialized && React.Children.map(children, child => {
@@ -86,7 +90,9 @@ const TabPageContainer = ({
 
           return (
             React.cloneElement(child, {
+              id: `${id}-${child.props.pageKey}`,
               isActive: child.props.tabKey === activePageKey, portalElement,
+              fill,
             })
           );
         })}

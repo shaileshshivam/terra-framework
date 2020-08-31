@@ -124,40 +124,19 @@ const Tab = ({
   }
 
   return (
-    <Tabs
-      id
-      activeTab
-      onRequestActivate
+    <div
+      {...customProps}
+      {...attributes}
+      id={id}
+      aria-controls={associatedPaneId}
+      role="tab"
+      className={paneClassNames}
+      title={label}
     >
-      <Tab
-        // context provider for { panelId, tabId }
-        // possible persistent prop?
-        tabKey
-        label={IntlProvider.getSTring(MyTabPage.titleKey})}
-        icon
-        isIconOnly
-        metaData
-        render={() => { // MyTabPage
-          <Panel
-            // derive from context { panelId, tabId }
-            toolBar
-            children
-          >
-        }}
-      >
-    // <div
-    //   {...customProps}
-    //   {...attributes}
-    //   id={id}
-    //   aria-controls={associatedPaneId}
-    //   role="tab"
-    //   className={paneClassNames}
-    //   title={label}
-    // >
-    //   {customDisplay}
-    //   {customDisplay ? null : icon}
-    //   {customDisplay || isIconOnly ? null : <span className={cx('label')}>{label}</span>}
-    // </div>
+      {customDisplay}
+      {customDisplay ? null : icon}
+      {customDisplay || isIconOnly ? null : <span className={cx('label')}>{label}</span>}
+    </div>
   );
 };
 

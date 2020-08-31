@@ -55,10 +55,6 @@ const propTypes = {
    * Child content to display within the selected tabPane.
    */
   children: PropTypes.node,
-  // /**
-  //  * Data object for building tabs.
-  //  */
-  // tabData: PropTypes.arrayOf(tabPropType),
     /**
    * Indicates if the pane content should fill to the height of the parent container.
    */
@@ -78,7 +74,6 @@ const Tabs = ({
   children,
   tabFill,
   fill,
-  tabData,
   ...customProps
 }) => {
   const selectedTab = tabData.find(tab => tab.isSelected);
