@@ -5,9 +5,9 @@ const Page2 = () => {
   return (
     <Panel
       toolBar={<p>Page 2 Toolbar</p>}
-      actions={[<div>test action</div>]}
+      actions={[<div>test action 2</div>]}
     >
-      <p>content</p>
+      <p>content 2</p>
     </Panel>
   );
 };

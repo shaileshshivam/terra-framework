@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 // import ApplicationErrorBoundary from 'terra-application/lib/application-error-boundary';
 import TabContext from './TabContext';
 import TabTitle from './_TabTitle';
-import styles from './Tabs.module.scss';
+import styles from './Panel.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +26,7 @@ const Panel = ({
     <div className={cx('page')}>
       {/* <ApplicationErrorBoundary> */}
         <div className={cx('page-header')}>
-          {/* <TabTitle action={actions}>{title}</TabTitle> */}
+          <TabTitle actions={actions}>{title}</TabTitle>
           {toolBar}
         </div>
         <div
