@@ -8,53 +8,54 @@ const cx = classNames.bind(styles);
 
 const propTypes = {
   id: PropTypes.string.isRequired,
-  activePageKey: PropTypes.string.isRequired,
+  activeTabKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   onRequestActivate: PropTypes.func.isRequired,
 };
 
 const Tabs = ({
   id,
-  activePageKey,
+  activeTabKey,
   children,
   onRequestActivate,
   ...customProps
 }) => {
-  const [isInitialized, setIsInitialized] = useState(false);
   const workspacePortalsRef = useRef({});
   const workspaceLastKeyRef = useRef();
   const workspaceRef = useRef();
 
   React.useLayoutEffect(() => {
-    const activeNode = workspacePortalsRef.current[activePageKey];
+    const activeNode = workspacePortalsRef.current[activeTabKey];
     if (!workspaceRef.current || workspaceRef.current.contains(activeNode?.element)) {
       return;
     }
     if (workspaceLastKeyRef.current) {
-      workspaceRef.current.removeChild(workspacePortalsRef.current[workspaceLastKeyRef.current].element);
+      const lastNode = workspacePortalsRef.current[workspaceLastKeyRef.current].element;
+      if (lastNode) {
+        workspaceRef.current.removeChild(lastNode);
+      }
     }
 
     if (activeNode?.element) {
       workspaceRef.current.appendChild(activeNode.element);
-      workspaceLastKeyRef.current = activePageKey;
+      workspaceLastKeyRef.current = activeTabKey;
     } else {
       workspaceLastKeyRef.current = undefined;
     }
-  }, [activePageKey]);
+  }, [activeTabKey]);
 
-  React.useLayoutEffect(() => {
-    setIsInitialized(true);
-  }, []);
-
-  const tabData = React.Children.map(child => {
+  const tabData = React.Children.map(children, child => {
+    const tabId = `${id}-${child.props.tabKey}`;
+    const panelId = `${tabId}-panel`
     return {
-      id: `${id}-${child.props.pageKey}`,
-      title: child.props.title,
+      id: tabId,
+      associatedPanelId: panelId,
+      label: child.props.label,
       icon: child.props.icon,
       count: child.props.count,
-      isSelected: child.props.pageKey == activePageKey,
+      isSelected: child.props.tabKey == activeTabKey,
       onSelect: onRequestActivate,
-      metaData: { key: child.props.pageKey },
+      metaData: child.props.metaData,
     };
   });
 
@@ -75,8 +76,8 @@ const Tabs = ({
         <TabContainer tabData={tabData} />
       </div>
       <div className={cx('body')} ref={workspaceRef}>
-        {isInitialized && React.Children.map(children, child => {
-          let portalElement = workspacePortalsRef.current[child.props.pageKey]?.element;
+        {React.Children.map(children, child => {
+          let portalElement = workspacePortalsRef.current[child.props.tabKey]?.element;
           if (!portalElement) {
             portalElement = document.createElement('div');
             portalElement.style.position = 'relative';
@@ -90,8 +91,10 @@ const Tabs = ({
 
           return (
             React.cloneElement(child, {
-              id: `${id}-${child.props.pageKey}`,
-              isActive: child.props.tabKey === activePageKey, portalElement,
+              key: child.props.tabKey,
+              id: `${id}-${child.props.tabKey}`,
+              isActive: child.props.tabKey === activeTabKey,
+              portalElement,
             })
           );
         })}

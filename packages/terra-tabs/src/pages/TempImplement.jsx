@@ -15,35 +15,33 @@ const propTypes = {
 const TempImplement = ({
   id,
 }) => {
-  const [activePageKey, setActivePageKey] = useState('page-1');
+  const [activeTabKey, setActiveTabKey] = useState('page-1');
 
   return (
-    <Tabs
-      id={id || 'test-id'}
-      activePageKey={activePageKey}
-      onRequestActivate={metaData => setActivePageKey(metaData.key)}
-      // onCOnfig
-    >
-      <TabPage
-        // possible persistent prop?
-        tabKey={'page-1'}
-        // label={IntlProvider.getString(MyTabPage.titleKey)}
-        label="Page 1"
-        metaData={{ key: 'page-2' }}
-        render={() => {
-          <Page1 />
-        }}
-      />
-      <TabPage
-        tabKey={'page-2'}
-        // label={IntlProvider.getString(MyTabPage.titleKey)}
-        label="Page 2"
-        metaData={{ key: 'page-2' }}
-        render={() => {
-          <Page2 />
-        }}
-      />
-    </Tabs>
+    <div style={{ height: "500px", backgroundColor: "pink" }}>
+      <Tabs
+        id={id || 'test-id'}
+        activeTabKey={activeTabKey}
+        onRequestActivate={metaData => setActiveTabKey(metaData.key)}
+        // onCOnfig
+      >
+        <TabPage
+          // possible persistent prop?
+          tabKey="page-1"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 1"
+          metaData={{ key: 'page-1' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-2"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 2"
+          metaData={{ key: 'page-2' }}
+          render={() => <Page2 />}
+        />
+      </Tabs>
+    </div>
   );
 };
 

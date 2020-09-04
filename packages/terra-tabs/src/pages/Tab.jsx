@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { KEY_SPACE, KEY_RETURN } from 'keycode-js';
 import { handleArrows } from './_TabUtils';
 
-import styles from './_TabContainer.module.scss';
+import styles from './TabContainer.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -16,7 +16,7 @@ const propTypes = {
   /**
    * The id of the tab pane element associated to this tab.
    */
-  associatedPaneId: PropTypes.string.isRequired,
+  associatedPanelId: PropTypes.string.isRequired,
   /**
    * Icon to be displayed on the tab.
    */
@@ -67,7 +67,7 @@ const defaultProps = {
 
 const Tab = ({
   id,
-  associatedPaneId,
+  associatedPanelId,
   icon,
   label,
   customDisplay,
@@ -127,7 +127,7 @@ const Tab = ({
       {...customProps}
       {...attributes}
       id={id}
-      aria-controls={associatedPaneId}
+      aria-controls={associatedPanelId}
       role="tab"
       className={paneClassNames}
       title={label}

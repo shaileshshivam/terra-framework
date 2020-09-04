@@ -5,6 +5,8 @@ import TabContext from './TabContext';
 const TabPage = ({
   // possible persistent prop?
   id, // private
+  associatedPanelId, // private
+  isActive,
   label,
   // icon,
   // isIconOnly,
@@ -15,7 +17,7 @@ const TabPage = ({
   const tabContextValue = React.useMemo(() => (
     {
       tabId: id,
-      panelId: `${id}-panel`,
+      panelId: associatedPanelId,
       title: label
     }
   ), [id, label]);

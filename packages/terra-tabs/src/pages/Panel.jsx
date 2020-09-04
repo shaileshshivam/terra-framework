@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+// import ApplicationErrorBoundary from 'terra-application/lib/application-error-boundary';
 import TabContext from './TabContext';
-import TabTitle from './TabTitle';
+import TabTitle from './_TabTitle';
 import styles from './Tabs.module.scss';
 
 const cx = classNames.bind(styles);
@@ -13,7 +14,7 @@ const propTypes = {
   actions: PropTypes.array,
 };
 
-const TabPage = ({
+const Panel = ({
   actions,
   children,
   toolBar,
@@ -23,10 +24,10 @@ const TabPage = ({
 
   return (
     <div className={cx('page')}>
-      <ApplicationErrorBoundary>
+      {/* <ApplicationErrorBoundary> */}
         <div className={cx('page-header')}>
-          <TabTitle action={actions}>{title}</TabTitle>
-          {toolbar}
+          {/* <TabTitle action={actions}>{title}</TabTitle> */}
+          {toolBar}
         </div>
         <div
           {...customProps}
@@ -37,13 +38,13 @@ const TabPage = ({
           aria-labelledby={tabId}
           aria-expanded="true"
         >
-          {render()}
+          {children}
         </div>
-      </ApplicationErrorBoundary>
+      {/* </ApplicationErrorBoundary> */}
     </div>
   );
 };
 
-TabPage.propTypes = propTypes;
+Panel.propTypes = propTypes;
 
-export default TabPage;
+export default Panel;

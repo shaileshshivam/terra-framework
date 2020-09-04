@@ -5,7 +5,7 @@ import ThemeContext from 'terra-theme-context';
 import ResizeObserver from 'resize-observer-polyfill';
 import MoreButton from './_MoreButton';
 import TabDropDown from './_TabDropDown';
-import Tab from './TabPage';
+import Tab from './Tab';
 import styles from './TabContainer.module.scss';
 
 const cx = classNames.bind(styles);
@@ -174,6 +174,7 @@ class TabContainer extends React.Component {
         visibleTabs.push(
           <Tab
             {...tab}
+            key={tab.id}
             index={index}
             tabIds={ids}
             onSelect={this.wrapOnSelect(tab.onSelect)}
@@ -183,6 +184,7 @@ class TabContainer extends React.Component {
         hiddenTabs.push(
           <Tab
             {...tab}
+            key={tab.id}
             index={index}
             tabIds={ids}
             onSelect={this.wrapOnSelectHidden(tab.onSelect)}

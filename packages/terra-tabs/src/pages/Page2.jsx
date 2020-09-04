@@ -1,12 +1,15 @@
 import React from 'react';
+import Panel from './Panel';
 
 const Page2 = () => {
-  <Panel
-    toolBar={<p>Page 2 Toolbar</p>}
-    titleActions={[<div>test action</div>]}
-  >
-    <p>content</p>
-  </Panel>
+  return (
+    <Panel
+      toolBar={<p>Page 2 Toolbar</p>}
+      actions={[<div>test action</div>]}
+    >
+      <p>content</p>
+    </Panel>
+  );
 };
 
 Page2.titleKey = "derp2";
