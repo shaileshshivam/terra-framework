@@ -40,6 +40,81 @@ const TempImplement = ({
           metaData={{ key: 'page-2' }}
           render={() => <Page2 />}
         />
+                <TabPage
+          // possible persistent prop?
+          tabKey="page-3"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 3"
+          metaData={{ key: 'page-3' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-4"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 4"
+          metaData={{ key: 'page-4' }}
+          render={() => <Page2 />}
+        />
+                <TabPage
+          // possible persistent prop?
+          tabKey="page-5"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 5"
+          metaData={{ key: 'page-5' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-6"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 6"
+          metaData={{ key: 'page-6' }}
+          render={() => <Page2 />}
+        />
+                <TabPage
+          // possible persistent prop?
+          tabKey="page-7"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 7"
+          metaData={{ key: 'page-7' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-8"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 8"
+          metaData={{ key: 'page-8' }}
+          render={() => <Page2 />}
+        />
+                <TabPage
+          // possible persistent prop?
+          tabKey="page-9"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 9"
+          metaData={{ key: 'page-9' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-10"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 10"
+          metaData={{ key: 'page-10' }}
+          render={() => <Page2 />}
+        />
+                <TabPage
+          // possible persistent prop?
+          tabKey="page-11"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 11"
+          metaData={{ key: 'page-11' }}
+          render={() => <Page1 />}
+        />
+        <TabPage
+          tabKey="page-12"
+          // label={IntlProvider.getString(MyTabPage.titleKey)}
+          label="Page 12"
+          metaData={{ key: 'page-12' }}
+          render={() => <Page2 />}
+        />
       </Tabs>
     </div>
   );

@@ -5,7 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import ThemeContext from 'terra-theme-context';
 import IconCaretDown from 'terra-icon/lib/icon/IconCaretDown';
 import { KEY_SPACE, KEY_RETURN } from 'keycode-js';
-import styles from './Tabs.module.scss';
+import styles from './TabContainer.module.scss';
 
 const cx = classNames.bind(styles);
 
