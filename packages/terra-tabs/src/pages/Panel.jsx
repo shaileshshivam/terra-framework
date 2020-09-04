@@ -19,11 +19,7 @@ const TabPage = ({
   toolBar,
   ...customProps
 }) => {
-  const {fill, panelId, tabId, isSmall, title} = React.useContext(TabContext);
-  const panelClassNames = cx([
-    'panel',
-    { fill },
-  ]);
+  const { panelId, tabId, title } = React.useContext(TabContext);
 
   return (
     <div className={cx('page')}>
@@ -34,8 +30,8 @@ const TabPage = ({
         </div>
         <div
           {...customProps}
-          role={isSmall ? "none" : "tabpanel"}
-          className={panelClassNames}
+          role="tabpanel"
+          className={cx('panel')}
           tabIndex="0"
           id={panelId}
           aria-labelledby={tabId}

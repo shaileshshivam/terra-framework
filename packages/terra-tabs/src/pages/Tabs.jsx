@@ -1,19 +1,24 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import CollapsibleTabs from './_CollapsibleTabs';
+import TabContainer from './_TabContainer';
 import styles from './Tabs.module.scss';
 
 const cx = classNames.bind(styles);
 
 const propTypes = {
-  activePageKey,
-  children: PropTypes.node,
+  id: PropTypes.string.isRequired,
+  activePageKey: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  onRequestActivate: PropTypes.func.isRequired,
 };
 
-const TabPageContainer = ({
+const Tabs = ({
+  id,
   activePageKey,
   children,
+  onRequestActivate,
+  ...customProps
 }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const workspacePortalsRef = useRef({});
@@ -25,7 +30,7 @@ const TabPageContainer = ({
     if (!workspaceRef.current || workspaceRef.current.contains(activeNode?.element)) {
       return;
     }
-    if (workspaceLastRef.current) {
+    if (workspaceLastKeyRef.current) {
       workspaceRef.current.removeChild(workspacePortalsRef.current[workspaceLastKeyRef.current].element);
     }
 
@@ -41,10 +46,6 @@ const TabPageContainer = ({
     setIsInitialized(true);
   }, []);
 
-  const onTabSelect = (event, metaData) => {
-    setActivePageKey(metaData.key);
-  };
-
   const tabData = React.Children.map(child => {
     return {
       id: `${id}-${child.props.pageKey}`,
@@ -52,27 +53,26 @@ const TabPageContainer = ({
       icon: child.props.icon,
       count: child.props.count,
       isSelected: child.props.pageKey == activePageKey,
-      onSelect: onTabSelect,
+      onSelect: onRequestActivate,
       metaData: { key: child.props.pageKey },
     };
   });
 
   const tabsClassNames = cx([
     'tabs',
-    { 'tab-fill': tabFill },
-    { 'body-fill': fill },
-    'structural',
+    { 'body-fill': true },
     customProps.className,
   ]);
   
   return (
     <div
       {...customProps}
+      id={id}
       className={tabsClassNames} 
       role="none"
     >
       <div className={cx('header')}>
-        <CollapsibleTabs tabData={tabData} />
+        <TabContainer tabData={tabData} />
       </div>
       <div className={cx('body')} ref={workspaceRef}>
         {isInitialized && React.Children.map(children, child => {
@@ -82,7 +82,7 @@ const TabPageContainer = ({
             portalElement.style.position = 'relative';
             portalElement.style.height = '100%';
             portalElement.style.width = '100%';
-            portalElement.id = `${props.id}-${child.props.tabKey}`;
+            portalElement.id = `${id}-${child.props.tabKey}`;
             workspacePortalsRef.current[child.props.tabKey] = {
               element: portalElement,
             };
@@ -92,7 +92,6 @@ const TabPageContainer = ({
             React.cloneElement(child, {
               id: `${id}-${child.props.pageKey}`,
               isActive: child.props.tabKey === activePageKey, portalElement,
-              fill,
             })
           );
         })}
@@ -101,6 +100,6 @@ const TabPageContainer = ({
   );
 };
 
-TabPageContainer.propTypes = propTypes;
+Tabs.propTypes = propTypes;
 
-export default TabPageContainer;
+export default Tabs;
