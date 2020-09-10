@@ -21,6 +21,11 @@ const propTypes = {
    */
   buttonRefCallback: PropTypes.func,
   /**
+   * @private
+   * To check if help element is provided by the field or not.
+   */
+  help: PropTypes.node,
+  /**
    * Custom input attributes to apply to the date input.
    */
   inputAttributes: PropTypes.object,
@@ -66,10 +71,6 @@ const propTypes = {
    */
   onKeyDown: PropTypes.func,
   /**
-   * The placeholder text to display in the date input.
-   */
-  placeholder: PropTypes.string,
-  /**
    * Whether or not the date is required.
    */
   required: PropTypes.bool,
@@ -101,7 +102,6 @@ const defaultProps = {
   onButtonFocus: undefined,
   onKeyDown: undefined,
   required: false,
-  placeholder: undefined,
   value: undefined,
   ariaLabel: undefined,
 };
@@ -148,6 +148,7 @@ class DatePickerInput extends React.Component {
   render() {
     const {
       buttonRefCallback,
+      help,
       inputAttributes,
       intl,
       isIncomplete,
@@ -159,7 +160,6 @@ class DatePickerInput extends React.Component {
       onFocus,
       onButtonFocus,
       onKeyDown,
-      placeholder,
       required,
       value,
       ariaLabel,
@@ -206,10 +206,10 @@ class DatePickerInput extends React.Component {
           name={'terra-date-'.concat(name)}
           value={value}
           onChange={this.handleOnChange}
-          placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}
           ariaLabel={value ? `${label}, ${getLocalizedDateForScreenReader(DateUtil.createSafeDate(dateValue), { intl: this.props.intl, locale: this.props.intl.locale })}` : label}
+          aria-describedby="format"
         />
         <Button
           className={buttonClasses}
@@ -224,6 +224,11 @@ class DatePickerInput extends React.Component {
           onFocus={onButtonFocus}
           refCallback={buttonRefCallback}
         />
+        { (help === undefined) && (
+        <div id="format" className={cx('format-text')} aria-label={`Format: (${intl.formatMessage({ id: 'Terra.datePicker.dateFormat' })})`}>
+          {`(${intl.formatMessage({ id: 'Terra.datePicker.dateFormat' })})`}
+        </div>
+        )}
       </div>
     );
   }
