@@ -1,3 +1,7 @@
+import classNames from 'classnames/bind';
+import Styles from './AbstractModal.module.scss';
+
+const cx = classNames.bind(Styles);
 /**
  * This helper updates the root dom element to update the overlay count used to manage  multiple layers
  * of inert requesting components. If the inert count is zero, it adds the inert attribute to the root dom
@@ -13,6 +17,7 @@ function showModalDomUpdates(modalElement, rootSelector) {
 
     if (dataOverlayCount < 1) {
       mainDocumentElement.setAttribute('inert', 'true');
+      mainDocumentElement.classList.add(cx('inert'));
     }
 
     mainDocumentElement.setAttribute('data-abstract-modal-overlay-count', `${dataOverlayCount + 1}`);
@@ -44,6 +49,7 @@ function hideModalDomUpdates(modalTriggerElement, rootSelector) {
     if (dataOverlayCount === 1) {
       mainDocumentElement.removeAttribute('data-abstract-modal-overlay-count');
       mainDocumentElement.removeAttribute('inert');
+      mainDocumentElement.classList.remove(cx('inert'));
     } else if (dataOverlayCount > 1) {
       mainDocumentElement.setAttribute('data-abstract-modal-overlay-count', `${dataOverlayCount - 1}`);
     }

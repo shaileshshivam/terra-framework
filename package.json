@@ -130,7 +130,7 @@
     "stylelint": "^11.0.0",
     "stylelint-config-terra": "^3.2.0",
     "terra-aggregate-translations": "^1.0.0",
-    "terra-dev-site": "^6.5.0",
+    "terra-dev-site": "https://github.com/cerner/terra-dev-site.git#csp-demo",
     "terra-disclosure-manager": "^4.9.0",
     "terra-enzyme-intl": "^3.0.0",
     "terra-toolkit": "^6.2.0",
