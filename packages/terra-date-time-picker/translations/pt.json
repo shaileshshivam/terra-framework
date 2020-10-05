@@ -2,5 +2,11 @@
   "Terra.dateTimePicker.timeClarification.title": "Explicação sobre o horário",
   "Terra.dateTimePicker.timeClarification.message": "A hora selecionada ocorre durante a transição do horário de verão para o horário padrão. Gostaria de inserir um horário anterior ou posterior ao selecionado?",
   "Terra.dateTimePicker.timeClarification.button.daylightSaving": "Antes (horário de verão)",
-  "Terra.dateTimePicker.timeClarification.button.standardTime": "Depois (horário padrão)"
+  "Terra.dateTimePicker.timeClarification.button.standardTime": "Depois (horário padrão)",
+  "Terra.dateTimePicker.hh": "HH",
+  "Terra.dateTimePicker.mm": "mm",
+  "Terra.dateTimePicker.ss": "s",
+  "Terra.dateTimePicker.timeFormatLabel": "Formato da hora:",
+  "Terra.dateTimePicker.dateFormat": "DD/MM/AAAA",
+  "Terra.dateTimePicker.dateFormatLabel": "Formato da data:"
 }

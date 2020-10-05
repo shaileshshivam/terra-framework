@@ -33,11 +33,16 @@ const propTypes = {
    */
   filterDate: PropTypes.func,
   /**
+   * Custom input attributes to apply to the hour input
+   */
+  hourAttributes: PropTypes.object,
+  /**
    * An array of ISO 8601 string representation of the dates to enable in the picker. The values must be in the `YYYY-MM-DDThh:mm:ss` format.
    * All Other dates will be disabled.
    */
   includeDates: PropTypes.arrayOf(PropTypes.string),
   /**
+   * @private
    * intl object programmatically imported through injectIntl from react-intl.
    * */
   intl: intlShape.isRequired,
@@ -63,6 +68,10 @@ const propTypes = {
    * The time portion in this value is ignored because this is strictly used in the date picker.
    */
   minDate: PropTypes.string,
+  /**
+   * Custom input attributes to apply to the minutes input
+   */
+  minuteAttributes: PropTypes.object,
   /**
    * Name of the date input. The name should be unique.
    */
@@ -105,15 +114,14 @@ const propTypes = {
    */
   required: PropTypes.bool,
   /**
+   * Custom input attributes to apply to the seconds input
+   */
+  secondAttributes: PropTypes.object,
+  /**
    * Whether an input field for seconds should be shown or not. If true then the second field must have a valid
    * number for the overall input to be considered valid.
    */
   showSeconds: PropTypes.bool,
-  /**
-   * Custom input attributes to apply to the time input. Use the name prop to set the name for the time input.
-   * Do not set the name in inputAttribute as it will be ignored.
-   */
-  timeInputAttributes: PropTypes.object,
   /**
    * An ISO 8601 string representation of the initial value to show in the date and time inputs. The value must be in the `YYYY-MM-DDThh:mm:ss` format.
    */
@@ -124,6 +132,13 @@ const propTypes = {
    * If the `variant` prop if set to `12-hour` for one of these supported locales, the variant will be ignored and defaults to `24-hour`.
    */
   timeVariant: PropTypes.oneOf([DateTimeUtils.FORMAT_12_HOUR, DateTimeUtils.FORMAT_24_HOUR]),
+  /**
+   * @private
+   * NOTICE: Internal prop to be used only by Terra framework. This component provides a built-in format mask that is
+   * required to be displayed to users for proper accessibility and must not be removed. 'DatePickerField' is permitted to set
+   * this prop because it provides the same format mask in its 'help' prop.
+  */
+  useExternalFormatMask: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -131,12 +146,14 @@ const defaultProps = {
   disabled: false,
   excludeDates: undefined,
   filterDate: undefined,
+  hourAttributes: {},
   includeDates: undefined,
   isIncomplete: false,
   isInvalid: false,
   isInvalidMeridiem: false,
   maxDate: '2100-12-31',
   minDate: '1900-01-01',
+  minuteAttributes: {},
   onBlur: undefined,
   onChange: undefined,
   onChangeRaw: undefined,
@@ -144,10 +161,11 @@ const defaultProps = {
   onFocus: undefined,
   onSelect: undefined,
   required: false,
+  secondAttributes: {},
   showSeconds: false,
-  timeInputAttributes: undefined,
   value: undefined,
   timeVariant: DateTimeUtils.FORMAT_24_HOUR,
+  useExternalFormatMask: false,
 };
 
 class DateTimePicker extends React.Component {
@@ -605,7 +623,9 @@ class DateTimePicker extends React.Component {
       disabled,
       excludeDates,
       filterDate,
+      hourAttributes,
       includeDates,
+      intl,
       isIncomplete,
       isInvalid,
       isInvalidMeridiem,
@@ -618,12 +638,14 @@ class DateTimePicker extends React.Component {
       onSelect,
       maxDate,
       minDate,
+      minuteAttributes,
       name,
       required,
+      secondAttributes,
       showSeconds,
-      timeInputAttributes,
       value,
       timeVariant,
+      useExternalFormatMask,
       ...customProps
     } = this.props;
 
@@ -669,6 +691,7 @@ class DateTimePicker extends React.Component {
             isIncomplete={isIncomplete}
             isInvalid={isInvalid}
             required={required}
+            useExternalFormatMask={useExternalFormatMask}
           />
         </div>
         <div className={cx('time-facade')}>
@@ -676,7 +699,9 @@ class DateTimePicker extends React.Component {
             onBlur={this.handleOnTimeBlur}
             onChange={this.handleTimeChange}
             onFocus={this.handleOnTimeInputFocus}
-            inputAttributes={timeInputAttributes}
+            hourAttributes={hourAttributes}
+            minuteAttributes={minuteAttributes}
+            secondAttributes={secondAttributes}
             name="input"
             value={this.timeValue}
             disabled={disabled}
@@ -687,6 +712,7 @@ class DateTimePicker extends React.Component {
             isInvalid={isInvalid}
             isInvalidMeridiem={isInvalidMeridiem}
             required={required}
+            useExternalFormatMask={useExternalFormatMask}
           />
 
           {this.state.isAmbiguousTime ? this.renderTimeClarification() : null}

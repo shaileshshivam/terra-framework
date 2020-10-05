@@ -35,8 +35,10 @@
     "terra-abstract-modal": "^3.28.0",
     "terra-button": "^3.3.0",
     "terra-date-picker": "^4.48.0",
+    "terra-form-field": "^3.1.0",
     "terra-theme-context": "^1.4.0",
-    "terra-time-input": "^4.32.0"
+    "terra-time-input": "^4.32.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "terra-form-field": "^3.1.0",

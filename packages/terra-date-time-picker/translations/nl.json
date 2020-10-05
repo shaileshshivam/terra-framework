@@ -2,5 +2,11 @@
   "Terra.dateTimePicker.timeClarification.button.daylightSaving": "Voor (zomertijd)",
   "Terra.dateTimePicker.timeClarification.button.standardTime": "Na (wintertijd/standaardtijd)",
   "Terra.dateTimePicker.timeClarification.message": "De geselecteerde tijd bevindt zich op de overgang van zomertijd naar wintertijd (standaardtijd). Wilt u deze voor of na de wijziging van zomertijd naar standaardtijd invoeren?",
-  "Terra.dateTimePicker.timeClarification.title": "Tijdverduidelijking"
+  "Terra.dateTimePicker.timeClarification.title": "Tijdverduidelijking",
+  "Terra.dateTimePicker.hh": "uu",
+  "Terra.dateTimePicker.mm": "mm",
+  "Terra.dateTimePicker.ss": "s",
+  "Terra.dateTimePicker.timeFormatLabel": "Tijdformaat:",
+  "Terra.dateTimePicker.dateFormat": "DD-MM-JJJJ",
+  "Terra.dateTimePicker.dateFormatLabel": "Datumnotatie:"
 }
