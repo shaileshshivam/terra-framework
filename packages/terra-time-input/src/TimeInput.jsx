@@ -20,10 +20,6 @@ const propTypes = {
    */
   disabled: PropTypes.bool,
   /**
-   * Custom input attributes that apply to the hour, minute, and second inputs.
-   */
-  inputAttributes: PropTypes.object,
-  /**
    * Custom input attributes to apply to the hour input
    */
   hourAttributes: PropTypes.object,
@@ -104,7 +100,6 @@ const propTypes = {
 
 const defaultProps = {
   disabled: false,
-  inputAttributes: {},
   isIncomplete: false,
   isInvalid: false,
   isInvalidMeridiem: false,
@@ -655,7 +650,6 @@ class TimeInput extends React.Component {
   render() {
     const {
       disabled,
-      inputAttributes,
       minuteAttributes,
       hourAttributes,
       intl,
@@ -754,7 +748,6 @@ class TimeInput extends React.Component {
             value={timeValue}
           />
           <Input
-            {...inputAttributes}
             {...hourAttributes}
             aria-label={intl.formatMessage({ id: 'Terra.timeInput.hours' })}
             refCallback={(inputRef) => {
@@ -778,7 +771,6 @@ class TimeInput extends React.Component {
           />
           <span className={cx('time-spacer')}>:</span>
           <Input
-            {...inputAttributes}
             {...minuteAttributes}
             refCallback={(inputRef) => { this.minuteInput = inputRef; }}
             aria-label={intl.formatMessage({ id: 'Terra.timeInput.minutes' })}
@@ -801,7 +793,6 @@ class TimeInput extends React.Component {
             <React.Fragment>
               <span className={cx('time-spacer')}>:</span>
               <Input
-                {...inputAttributes}
                 {...secondAttributes}
                 refCallback={(inputRef) => { this.secondInput = inputRef; }}
                 aria-label={intl.formatMessage({ id: 'Terra.timeInput.seconds' })}
