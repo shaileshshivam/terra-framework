@@ -670,6 +670,7 @@ class DateTimePicker extends React.Component {
 
         <div className={cx('date-facade')}>
           <DatePicker
+            ariaLabel={dateInputAttributes && dateInputAttributes['aria-label']}
             onCalendarButtonClick={this.handleOnCalendarButtonClick}
             onChange={this.handleDateChange}
             onChangeRaw={this.handleDateChangeRaw}

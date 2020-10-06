@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Field from 'terra-form-field';
 import { injectIntl, intlShape } from 'react-intl';
-import uuidv4 from 'uuid/v4';
 import DateTimeUtils from './DateTimeUtils';
 
 import DateTimePicker from './DateTimePicker';
@@ -251,19 +250,10 @@ const DateTimePickerField = (props) => {
     ...customProps
   } = props;
 
-  const uniqueid = useRef(uuidv4());
-
-  /**
-   * aria-describedby ids
-   * Used to map help text, and error messages with input/select elements
-   */
-  const helpAriaDescriptionId = `terra-date-time-picker-field-description-help-${uniqueid.current}`;
-  const errorAriaDescriptionId = `terra-date-time-picker-input-field-description-error-${uniqueid.current}`;
-
-  let ariaDescriptionIds = helpAriaDescriptionId;
+  let ariaDescriptionIds = `${dateTimePickerId}-help`;
 
   if (error && isInvalid) {
-    ariaDescriptionIds = `${errorAriaDescriptionId} ${helpAriaDescriptionId}`;
+    ariaDescriptionIds = `${dateTimePickerId}-error ${dateTimePickerId}-help`;
   }
 
   const customDateInputAriaDescribedById = dateInputAttributes && dateInputAttributes['aria-describedby'];
@@ -314,18 +304,18 @@ const DateTimePickerField = (props) => {
       maxWidth={maxWidth}
     >
       <DateTimePicker
-        dateInputAttributes={{ ...dateInputAttributes, 'aria-describedby': DateInputAriaDescribedByIds }}
+        dateInputAttributes={{ ...dateInputAttributes, 'aria-describedby': DateInputAriaDescribedByIds, 'aria-label': label }}
         disabled={disabled}
         excludeDates={excludeDates}
         filterDate={filterDate}
-        hourAttributes={{ ...hourAttributes, 'aria-describedby': hourAriaDescriptionIds }}
+        hourAttributes={{ ...hourAttributes, 'aria-describedby': hourAriaDescriptionIds, 'aria-label': label }}
         id={dateTimePickerId}
         includeDates={includeDates}
         isIncomplete={isIncomplete}
         isInvalid={isInvalid}
         isInvalidMeridiem={isInvalidMeridiem}
         maxDate={maxDate}
-        minuteAttributes={{ ...minuteAttributes, 'aria-describedby': minuteAriaDescriptionIds }}
+        minuteAttributes={{ ...minuteAttributes, 'aria-describedby': minuteAriaDescriptionIds, 'aria-label': label }}
         minDate={minDate}
         name={name}
         onBlur={onBlur}
@@ -336,7 +326,7 @@ const DateTimePickerField = (props) => {
         onRequestClose={onRequestClose}
         onSelect={onSelect}
         required={required}
-        secondAttributes={{ ...secondAttributes, 'aria-describedby': secondAriaDescriptionIds }}
+        secondAttributes={{ ...secondAttributes, 'aria-describedby': secondAriaDescriptionIds, 'aria-label': label }}
         showSeconds={showSeconds}
         timeVariant={timeVariant}
         value={value}

@@ -6,6 +6,7 @@
 
 * Fixed
   * Fixes inconsistent focus styles in IE.
+  * Fixes description id's in DatePicker for better accessibility.
 
 * Changed
   * `onClickOutside` prop has been deprecated, will resolve to `onRequestClose`
