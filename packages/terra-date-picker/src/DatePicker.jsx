@@ -121,6 +121,11 @@ const propTypes = {
   */
   useExternalFormatMask: PropTypes.bool,
   /**
+   * @private
+   * utcOffset
+   * */
+  utcOffset: PropTypes.number,
+  /**
    * The date value. This prop should only be used for a controlled date picker.
    * When this prop is set a handler is needed for both the `onChange` and `onChangeRaw` props to manage the date value.
    * If both `selectedDate` and this prop are set, then `selectedDate` will have no effect.
@@ -184,7 +189,7 @@ class DatePicker extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { selectedDate, value } = nextProps;
+    const { selectedDate, value, utcOffset } = nextProps;
     let nextDateValue = selectedDate;
 
     // Use the value for a controlled component if one is provided.
@@ -193,7 +198,7 @@ class DatePicker extends React.Component {
     }
 
     if (nextDateValue !== prevState.prevPropsSelectedDate) {
-      const nextSelectedDate = DateUtil.createSafeDate(nextDateValue);
+      const nextSelectedDate = DateUtil.createSafeDate(nextDateValue, utcOffset);
 
       return {
         selectedDate: nextSelectedDate,
@@ -216,7 +221,7 @@ class DatePicker extends React.Component {
 
     let isValidDate = false;
 
-    if (this.dateValue === '' || (isCompleteDate && this.isDateWithinRange(DateUtil.createSafeDate(iSOString)))) {
+    if (this.dateValue === '' || (isCompleteDate && this.isDateWithinRange(DateUtil.createSafeDate(iSOString, this.props.utcOffset)))) {
       isValidDate = true;
     }
 
@@ -372,7 +377,7 @@ class DatePicker extends React.Component {
   isDateWithinRange(date) {
     let isAcceptable = true;
 
-    if (DateUtil.isDateOutOfRange(date, DateUtil.createSafeDate(DateUtil.getMinDate(this.props.minDate)), DateUtil.createSafeDate(DateUtil.getMaxDate(this.props.maxDate)))) {
+    if (DateUtil.isDateOutOfRange(date, DateUtil.createSafeDate(DateUtil.getMinDate(this.props.minDate), this.props.utcOffset), DateUtil.createSafeDate(DateUtil.getMaxDate(this.props.maxDate), this.props.utcOffset))) {
       isAcceptable = false;
     }
 
@@ -407,6 +412,7 @@ class DatePicker extends React.Component {
       selectedDate,
       useExternalFormatMask,
       value,
+      utcOffset,
       isInline,
       ariaLabel,
       ...customProps
@@ -430,7 +436,7 @@ class DatePicker extends React.Component {
     if (value !== undefined) {
       // If value is empty, let selectedDateInPicker be undefined as in clearing the value.
       if (value !== '') {
-        selectedDateInPicker = DateUtil.createSafeDate(DateUtil.convertToISO8601(value, dateFormat));
+        selectedDateInPicker = DateUtil.createSafeDate(DateUtil.convertToISO8601(value, dateFormat), this.props.utcOffset);
 
         // If value is not a valid date, keep the previous selected date in the picker.
         if (selectedDateInPicker === undefined) {
@@ -483,8 +489,8 @@ class DatePicker extends React.Component {
             excludeDates={DateUtil.filterInvalidDates(excludeDates)}
             filterDate={this.handleFilterDate}
             includeDates={DateUtil.filterInvalidDates(includeDates)}
-            maxDate={DateUtil.createSafeDate(DateUtil.getMaxDate(maxDate))}
-            minDate={DateUtil.createSafeDate(DateUtil.getMinDate(minDate))}
+            maxDate={DateUtil.createSafeDate(DateUtil.getMaxDate(maxDate), this.props.utcOffset)}
+            minDate={DateUtil.createSafeDate(DateUtil.getMinDate(minDate), this.props.utcOffset)}
             todayButton={intl.formatMessage({ id: 'Terra.datePicker.today' })}
             dateFormatCalendar=" "
             dateFormat={dateFormat}
@@ -496,6 +502,7 @@ class DatePicker extends React.Component {
             preventOpenOnFocus
             name={name}
             allowSameDay
+            utcOffset={utcOffset}
           />
         </ResponsiveElement>
       </div>

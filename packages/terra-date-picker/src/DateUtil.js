@@ -8,12 +8,18 @@ class DateUtil {
    * @param {string|undefined} date - The date to convert. Expect to be in ISO format.
    * @return {object|undefined} - The moment object. Undefined if unable to convert.
    */
-  static createSafeDate(date) {
+  static createSafeDate(date, utcOffset) {
     if (!date) {
       return undefined;
     }
 
     let momentDate = moment(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
+
+    if (utcOffset) {
+      momentDate = moment.utc(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true).utcOffset(utcOffset);
+      momentDate = momentDate.subtract(utcOffset, 'hours');
+    }
+
     if (!momentDate || !momentDate.isValid()) {
       // This should allow DateTime inputs that used to work in the moment.ISO_8601 to still pass but discard the time from the value.
       momentDate = moment(date.slice(0, 10), DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
@@ -27,13 +33,13 @@ class DateUtil {
    * @return {object|undefined} - The default date value.
    */
   static defaultValue(props) {
-    const { selectedDate, value } = props;
+    const { selectedDate, value, utcOffset } = props;
 
     if (value !== undefined) {
-      return DateUtil.createSafeDate(value);
+      return DateUtil.createSafeDate(value, utcOffset);
     }
 
-    return DateUtil.createSafeDate(selectedDate);
+    return DateUtil.createSafeDate(selectedDate, utcOffset);
   }
 
   /**
