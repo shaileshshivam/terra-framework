@@ -16,7 +16,12 @@ class DateUtil {
     let momentDate = moment(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
 
     if (utcOffset) {
+      // Create the moment date that takes the utcOffset into account.
       momentDate = moment.utc(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true).utcOffset(utcOffset);
+
+      // For example, a provided date of 2020-11-01 and utcOffset of -9  would yield a momentDate of 2020-10-31T15:00:00-9:00.
+      // Notice that the date changed from 2020-11-01 to 2020-10-31. We want the date to not change and only set the utcOffset.
+      // Subtracting the utcOffset value in hours would yield 2020-11-01T00:00:00-9:00
       momentDate = momentDate.subtract(utcOffset, 'hours');
     }
 
