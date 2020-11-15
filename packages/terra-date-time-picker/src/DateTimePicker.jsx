@@ -38,6 +38,12 @@ const propTypes = {
    */
   includeDates: PropTypes.arrayOf(PropTypes.string),
   /**
+   * Timezone value to indicate in which timezone the date-time component is rendered.
+   * The value provided should be a valid [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string, else will default to browser/local timezone.
+   * Note: This value is considered only for the initial render. Changes to an already set time zone will reset to the first set time zone.
+   */
+  initialTimeZone: PropTypes.string,
+  /**
    * intl object programmatically imported through injectIntl from react-intl.
    * */
   intl: intlShape.isRequired,
@@ -124,12 +130,7 @@ const propTypes = {
    * If the `variant` prop if set to `12-hour` for one of these supported locales, the variant will be ignored and defaults to `24-hour`.
    */
   timeVariant: PropTypes.oneOf([DateTimeUtils.FORMAT_12_HOUR, DateTimeUtils.FORMAT_24_HOUR]),
-  /**
-   * Timezone value to indicate in which timezone the date-time component is rendered.
-   * The value provided should be a valid [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) string, else will default to browser/local timezone.
-   * Note: This value is considered only for the initial render. Changes to an already set time zone will reset to the first set time zone.
-   */
-  initialTimeZone: PropTypes.string,
+  
 };
 
 const defaultProps = {
@@ -138,6 +139,7 @@ const defaultProps = {
   excludeDates: undefined,
   filterDate: undefined,
   includeDates: undefined,
+  initialTimeZone: DateTimeUtils.getLocalTimeZone(),
   isIncomplete: false,
   isInvalid: false,
   isInvalidMeridiem: false,
@@ -154,7 +156,6 @@ const defaultProps = {
   timeInputAttributes: undefined,
   value: undefined,
   timeVariant: DateTimeUtils.FORMAT_24_HOUR,
-  initialTimeZone: DateTimeUtils.getLocalTimeZone(),
 };
 
 class DateTimePicker extends React.Component {
@@ -620,6 +621,7 @@ class DateTimePicker extends React.Component {
       excludeDates,
       filterDate,
       includeDates,
+      initialTimeZone,
       isIncomplete,
       isInvalid,
       isInvalidMeridiem,
@@ -638,7 +640,6 @@ class DateTimePicker extends React.Component {
       timeInputAttributes,
       value,
       timeVariant,
-      initialTimeZone,
       ...customProps
     } = this.props;
 
@@ -685,7 +686,7 @@ class DateTimePicker extends React.Component {
             isIncomplete={isIncomplete}
             isInvalid={isInvalid}
             required={required}
-            utcOffset={utcOffset}
+            initialTimeZone={initialTimeZone}
           />
         </div>
         <div className={cx('time-facade')}>

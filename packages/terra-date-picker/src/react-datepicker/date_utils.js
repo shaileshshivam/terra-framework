@@ -51,15 +51,15 @@ export function newDate (point) {
   return moment(point)
 }
 
-export function newDateWithOffset (utcOffset) {
-  return moment().utc().utcOffset(utcOffset)
+export function newDateWithTimeZone (timeZone) {
+  return moment().tz(timeZone);
 }
 
-export function now (maybeFixedUtcOffset) {
-  if (maybeFixedUtcOffset == null) {
+export function now (timeZone) {
+  if (!timeZone) {
     return newDate()
   }
-  return newDateWithOffset(maybeFixedUtcOffset)
+  return newDateWithTimeZone(timeZone)
 }
 
 export function cloneDate (date) {

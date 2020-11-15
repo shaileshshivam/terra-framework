@@ -1,33 +1,34 @@
 /* eslint-disable no-underscore-dangle */
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 class DateUtil {
   /**
    * Creates a moment object using the provided date string. Moment is unable to initialize a valid date if the date passed in is
    * null, empty string, or alpha characters and undefined would be returned.
    * @param {string|undefined} date - The date to convert. Expect to be in ISO format.
-   * @return {object|undefined} - The moment object. Undefined if unable to convert.
+   * @param {string|undefined} initialTimeZone - The timezone of the date.
+   * @return {object|undefined} - The moment object in the provided date and timezone. Undefined if unable to convert.
    */
-  static createSafeDate(date, utcOffset) {
+  static createSafeDate(date, initialTimeZone) {
     if (!date) {
       return undefined;
     }
 
-    let momentDate = moment(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
+    let momentDate;
 
-    if (utcOffset) {
-      // Create the moment date that takes the utcOffset into account.
-      momentDate = moment.utc(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true).utcOffset(utcOffset);
-
-      // For example, a provided date of 2020-11-01 and utcOffset of -9  would yield a momentDate of 2020-10-31T15:00:00-9:00.
-      // Notice that the date changed from 2020-11-01 to 2020-10-31. We want the date to not change and only set the utcOffset.
-      // Subtracting the utcOffset value in hours would yield 2020-11-01T00:00:00-9:00
-      momentDate = momentDate.subtract(utcOffset, 'hours');
+    if (initialTimeZone && moment.tz.zone(initialTimeZone)) {
+      momentDate = moment.tz(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true, initialTimeZone);
+    } else {
+      momentDate = moment(date, DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
     }
 
     if (!momentDate || !momentDate.isValid()) {
       // This should allow DateTime inputs that used to work in the moment.ISO_8601 to still pass but discard the time from the value.
-      momentDate = moment(date.slice(0, 10), DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
+      if (initialTimeZone && moment.tz.zone(initialTimeZone)) {
+        momentDate = moment.tz(date.slice(0, 10), DateUtil.ISO_EXTENDED_DATE_FORMAT, true, initialTimeZone);
+      } else {
+        momentDate = moment(date.slice(0, 10), DateUtil.ISO_EXTENDED_DATE_FORMAT, true);
+      }
     }
     return momentDate.isValid() ? momentDate : undefined;
   }
@@ -38,13 +39,13 @@ class DateUtil {
    * @return {object|undefined} - The default date value.
    */
   static defaultValue(props) {
-    const { selectedDate, value, utcOffset } = props;
+    const { initialTimeZone, selectedDate, value } = props;
 
     if (value !== undefined) {
-      return DateUtil.createSafeDate(value, utcOffset);
+      return DateUtil.createSafeDate(value, initialTimeZone);
     }
 
-    return DateUtil.createSafeDate(selectedDate, utcOffset);
+    return DateUtil.createSafeDate(selectedDate, initialTimeZone);
   }
 
   /**
