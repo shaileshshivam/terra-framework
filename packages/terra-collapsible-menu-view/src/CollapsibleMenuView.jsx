@@ -21,6 +21,11 @@ const propTypes = {
   children: PropTypes.node.isRequired,
 
   /**
+   * Array of Item/ItemGroup/Divider elements to be always displayed in the menu.
+   */
+  alwaysHiddenItems: PropTypes.array,
+
+  /**
    * A string representation of the width in px, limited to:
    * 160, 240, 320, 640, 960, 1280, 1760, or auto
    */
@@ -73,6 +78,7 @@ class CollapsibleMenuView extends React.Component {
   handleResize(width) {
     const menuButtonWidth = this.menuButton.getBoundingClientRect().width;
     const availableWidth = width - menuButtonWidth;
+    const hasAlwaysHidden = this.props.alwaysHiddenItems && this.props.alwaysHiddenItems.length > 0; // TODO: validate
     let hiddenStartIndex = -1;
     let calcWidth = 0;
     let menuHidden = true;
@@ -84,7 +90,7 @@ class CollapsibleMenuView extends React.Component {
 
       if (calcWidth > availableWidth) {
         // If last child fits in the available space, leave it face up
-        if (i === this.props.children.length - 1 && calcWidth <= width) {
+        if (!hasAlwaysHidden && i === this.props.children.length - 1 && calcWidth <= width) { // TODO: validate
           break;
         }
 
@@ -100,7 +106,7 @@ class CollapsibleMenuView extends React.Component {
     }
 
     if (this.menuHidden !== menuHidden || this.hiddenStartIndex !== hiddenStartIndex) {
-      this.menuHidden = menuHidden;
+      this.menuHidden = hasAlwaysHidden ? false : menuHidden; // TODO: validate
       this.hiddenStartIndex = hiddenStartIndex;
       this.forceUpdate();
     }
@@ -125,16 +131,20 @@ class CollapsibleMenuView extends React.Component {
 
   render() {
     const {
-      children, boundingRef, menuWidth, ...customProps
+      children, boundingRef, menuWidth, alwaysHiddenItems, ...customProps
     } = this.props;
     const visibleChildren = React.Children.toArray(children);
 
-    let hiddenChildren = null;
+    let hiddenChildren = [];
     if (this.hiddenStartIndex >= 0) {
       hiddenChildren = visibleChildren.splice(this.hiddenStartIndex);
     }
-    const theme = this.context;
+    // TODO: validate
+    if (alwaysHiddenItems && alwaysHiddenItems.length > 0) {
+      hiddenChildren = hiddenChildren.concat(alwaysHiddenItems);
+    }
 
+    const theme = this.context;
     const collapsibleMenuViewClassName = classNames(cx(
       'collapsible-menu-view',
       { 'is-calculating': this.isCalculating },

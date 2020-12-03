@@ -35,7 +35,14 @@ class CollapsibleMenuViewDemo extends React.Component {
 
   render() {
     return (
-      <CollapsibleMenuView>
+      <CollapsibleMenuView
+        // alwaysHiddenItems={[
+        //   <CollapsibleMenuView.Item
+        //     text="Menu Button HIDDEN"
+        //     key="MenuButton HIDDEN"
+        //   />,
+        // ]}
+      >
         <CollapsibleMenuView.Toggle
           text="Toggle Item 1"
           key="toggle1"
