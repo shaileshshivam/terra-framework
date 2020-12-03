@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -6,8 +6,10 @@ import classNamesBind from 'classnames/bind';
 import ThemeContext from 'terra-theme-context';
 import Button from 'terra-button';
 import ContentContainer from 'terra-content-container';
+import VisuallyHiddenText from 'terra-visually-hidden-text';
 import FocusTrap from 'focus-trap-react';
 import Hookshot from 'terra-hookshot';
+import { hidePopupDomUpdates, showPopupDomUpdates } from './inertHelpers';
 import styles from './PopupContent.module.scss';
 
 const cx = classNamesBind.bind(styles);
@@ -82,6 +84,10 @@ const propTypes = {
    * The function returning the frame html reference.
    */
   refCallback: PropTypes.func,
+  /**
+   * Allows assigning of root element custom data attribute for easy selecting of document base component.
+   */
+  rootSelector: PropTypes.string,
 };
 
 const defaultProps = {
@@ -93,10 +99,48 @@ const defaultProps = {
   isHeightAutomatic: false,
   isWidthAutomatic: false,
   popupContentRole: 'dialog',
+  rootSelector: '#root',
 };
 
-class PopupContent extends React.Component {
-  static addPopupHeader(children, onRequestClose) {
+const PopupContent = (props) => {
+  const {
+    arrow,
+    children,
+    classNameInner,
+    contentHeight,
+    contentHeightMax,
+    contentWidth,
+    contentWidthMax,
+    isFocusedDisabled,
+    isHeaderDisabled,
+    isHeightAutomatic,
+    isWidthAutomatic,
+    onRequestClose,
+    onResize,
+    onContentResize,
+    popupContentRole,
+    refCallback,
+    rootSelector,
+    ...customProps
+  } = props;
+
+  const ref = useRef(null);
+
+  const [windowWidth, setWindowWidth] = useState(null);
+
+  useEffect(() => {
+    // Value used to verify horizontal resize.
+    setWindowWidth(window.innerWidth);
+    // Store element that was last focused prior to popup opening
+    const popupTrigger = document.activeElement;
+    showPopupDomUpdates(ref.current, rootSelector);
+
+    return () => {
+      hidePopupDomUpdates(popupTrigger, rootSelector);
+    };
+  }, [ref, rootSelector]);
+
+  const addPopupHeader = () => {
     const icon = <span className={cx('close-icon')} />;
     const header = (
       <div className={cx('header')}>
@@ -106,13 +150,11 @@ class PopupContent extends React.Component {
       </div>
     );
     return <ContentContainer header={header} fill>{children}</ContentContainer>;
-  }
+  };
 
-  static isBounded(value, maxValue) {
-    return value > 0 && maxValue > 0 && value >= maxValue;
-  }
+  const isBounded = (value, maxValue) => value > 0 && maxValue > 0 && value >= maxValue;
 
-  static cloneChildren(children, isHeightAutomatic, isWidthAutomatic, isHeightBounded, isWidthBounded, isHeaderDisabled) {
+  const cloneChildren = (isHeightBounded, isWidthBounded) => {
     const newProps = {};
     if (isHeightAutomatic) {
       newProps.isHeightBounded = isHeightBounded;
@@ -124,32 +166,9 @@ class PopupContent extends React.Component {
       newProps.closeButtonRequired = 'true';
     }
     return React.Children.map(children, child => React.cloneElement(child, newProps));
-  }
+  };
 
-  constructor(props) {
-    super(props);
-    this.handleOnResize = this.handleOnResize.bind(this);
-  }
-
-  componentDidMount() {
-    // Value used to verify horizontal resize.
-    this.windowWidth = window.innerWidth;
-  }
-
-  static getContentStyle(height, maxHeight, width, maxWidth, isHeightAutomatic, isWidthAutomatic) {
-    const heightStyle = PopupContent.getDimensionStyle(height, maxHeight, isHeightAutomatic);
-    const widthStyle = PopupContent.getDimensionStyle(width, maxWidth, isWidthAutomatic);
-    const contentStyle = {};
-    if (heightStyle) {
-      contentStyle.height = heightStyle;
-    }
-    if (widthStyle) {
-      contentStyle.width = widthStyle;
-    }
-    return contentStyle;
-  }
-
-  static getDimensionStyle(value, maxValue, isAutomatic) {
+  const getDimensionStyle = (value, maxValue, isAutomatic) => {
     if (value > 0) {
       if (maxValue > 0 && value >= maxValue) {
         return `${maxValue.toString()}px`;
@@ -158,93 +177,91 @@ class PopupContent extends React.Component {
       }
     }
     return null;
-  }
+  };
 
-  handleOnResize(event) {
-    if (this.props.onResize) {
-      this.props.onResize(event, this.windowWidth);
+  const getContentStyle = (height, maxHeight, width, maxWidth) => {
+    const heightStyle = getDimensionStyle(height, maxHeight, isHeightAutomatic);
+    const widthStyle = getDimensionStyle(width, maxWidth, isWidthAutomatic);
+    const contentStyle = {};
+    if (heightStyle) {
+      contentStyle.height = heightStyle;
     }
-  }
-
-  render() {
-    const {
-      arrow,
-      children,
-      classNameInner,
-      contentHeight,
-      contentHeightMax,
-      contentWidth,
-      contentWidthMax,
-      isFocusedDisabled,
-      isHeaderDisabled,
-      isHeightAutomatic,
-      isWidthAutomatic,
-      onRequestClose,
-      onResize,
-      onContentResize,
-      popupContentRole,
-      refCallback,
-      ...customProps
-    } = this.props;
-
-    const contentStyle = PopupContent.getContentStyle(contentHeight, contentHeightMax, contentWidth, contentWidthMax, isHeightAutomatic, isWidthAutomatic);
-    const isHeightBounded = PopupContent.isBounded(contentHeight, contentHeightMax);
-    const isWidthBounded = PopupContent.isBounded(contentWidth, contentWidthMax);
-    const isFullScreen = isHeightBounded && isWidthBounded;
-
-    let content = PopupContent.cloneChildren(children, isHeightAutomatic, isWidthAutomatic, isHeightBounded, isWidthBounded, isHeaderDisabled);
-    if (isFullScreen && !isHeaderDisabled) {
-      content = PopupContent.addPopupHeader(content, onRequestClose);
+    if (widthStyle) {
+      contentStyle.width = widthStyle;
     }
-    const theme = this.context;
+    return contentStyle;
+  };
 
-    const contentClassNames = classNames(cx(
-      'content',
-      theme.className,
-    ),
-    customProps.className);
+  const handleOnResize = (event) => {
+    if (props.onResize) {
+      props.onResize(event, windowWidth);
+    }
+  };
 
-    const roundedCorners = arrow && !isFullScreen;
-    const arrowContent = roundedCorners ? arrow : undefined;
-    const innerClassNames = cx([
-      'inner',
-      { 'is-full-screen': isFullScreen },
-      { 'rounded-corners': roundedCorners },
-      classNameInner,
-    ]);
+  const contentStyle = getContentStyle(contentHeight, contentHeightMax, contentWidth, contentWidthMax);
+  const isHeightBounded = isBounded(contentHeight, contentHeightMax);
+  const isWidthBounded = isBounded(contentWidth, contentWidthMax);
+  const isFullScreen = isHeightBounded && isWidthBounded;
 
-    const heightData = isHeightAutomatic ? { 'data-terra-popup-automatic-height': true } : {};
-    const widthData = isWidthAutomatic ? { 'data-terra-popup-automatic-width': true } : {};
+  let content = cloneChildren(isHeightBounded, isWidthBounded);
+  if (isFullScreen && !isHeaderDisabled) {
+    content = addPopupHeader();
+  }
+  const theme = React.useContext(ThemeContext);
 
-    return (
-      <FocusTrap focusTrapOptions={{ returnFocusOnDeactivate: true, clickOutsideDeactivates: true }}>
-        <div>
-          <Hookshot.Content
-            {...customProps}
-            className={contentClassNames}
-            tabIndex={isFocusedDisabled ? null : '0'}
-            data-terra-popup-content
-            onContentResize={(isHeightAutomatic || isWidthAutomatic) ? onContentResize : undefined}
-            onEsc={onRequestClose}
-            onResize={this.handleOnResize}
-            refCallback={refCallback}
-            role={popupContentRole || null}
+  const contentClassNames = classNames(cx(
+    'content',
+    theme.className,
+  ),
+  customProps.className);
+
+  const roundedCorners = arrow && !isFullScreen;
+  const arrowContent = roundedCorners ? arrow : undefined;
+  const innerClassNames = cx([
+    'inner',
+    { 'is-full-screen': isFullScreen },
+    { 'rounded-corners': roundedCorners },
+    classNameInner,
+  ]);
+
+  const heightData = isHeightAutomatic ? { 'data-terra-popup-automatic-height': true } : {};
+  const widthData = isWidthAutomatic ? { 'data-terra-popup-automatic-width': true } : {};
+
+  return (
+    <FocusTrap focusTrapOptions={{ returnFocusOnDeactivate: true, clickOutsideDeactivates: true }}>
+      <div>
+        <Hookshot.Content
+          {...customProps}
+          className={contentClassNames}
+          tabIndex={isFocusedDisabled ? null : '0'}
+          data-terra-popup-content
+          onContentResize={(isHeightAutomatic || isWidthAutomatic) ? onContentResize : undefined}
+          onEsc={onRequestClose}
+          onResize={handleOnResize}
+          refCallback={refCallback}
+          role={popupContentRole || null}
+        >
+          {arrowContent}
+          {/* eslint-disable-next-line react/forbid-dom-props */}
+          <div
+            {...heightData}
+            {...widthData}
+            data-terra-popup-begin
+            className={innerClassNames}
+            style={contentStyle}
+            ref={ref}
           >
-            {arrowContent}
-            {/* eslint-disable-next-line react/forbid-dom-props */}
-            <div {...heightData} {...widthData} className={innerClassNames} style={contentStyle}>
-              {content}
-            </div>
-          </Hookshot.Content>
-        </div>
-      </FocusTrap>
-    );
-  }
-}
+            <VisuallyHiddenText data-terra-popup-begin tabIndex="-1" text={content} />
+            {content}
+          </div>
+        </Hookshot.Content>
+      </div>
+    </FocusTrap>
+  );
+};
 
 PopupContent.propTypes = propTypes;
 PopupContent.defaultProps = defaultProps;
-PopupContent.contextType = ThemeContext;
 
 export default PopupContent;
 

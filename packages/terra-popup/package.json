@@ -36,7 +36,8 @@
     "terra-content-container": "^3.0.0",
     "terra-hookshot": "^5.31.0",
     "terra-mixins": "^1.0.0",
-    "terra-theme-context": "^1.4.0"
+    "terra-theme-context": "^1.4.0",
+    "terra-visually-hidden-text": "2.30.0"
   },
   "devDependencies": {
     "terra-disclosure-manager": "^4.37.0",

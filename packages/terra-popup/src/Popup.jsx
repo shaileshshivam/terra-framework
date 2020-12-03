@@ -97,6 +97,10 @@ const propTypes = {
    * Prop to set role on popup content container
    */
   popupContentRole: PropTypes.string,
+  /**
+   * Allows assigning of root element custom data attribute for easy selecting of document base component.
+   */
+  rootSelector: PropTypes.string,
 };
 
 const defaultProps = {
@@ -113,6 +117,7 @@ const defaultProps = {
   isHeaderDisabled: false,
   isOpen: false,
   popupContentRole: 'dialog',
+  rootSelector: '#root',
 };
 
 class Popup extends React.Component {
@@ -233,6 +238,7 @@ class Popup extends React.Component {
         isHeightAutomatic={this.props.contentHeight === 'auto'}
         isWidthAutomatic={this.props.contentWidth === 'auto'}
         isFocusedDisabled={this.props.isContentFocusDisabled}
+        rootSelector={this.props.rootSelector}
       >
         {this.props.children}
       </PopupContent>
