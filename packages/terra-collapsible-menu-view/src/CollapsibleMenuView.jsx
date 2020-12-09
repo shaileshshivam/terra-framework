@@ -133,15 +133,12 @@ class CollapsibleMenuView extends React.Component {
     const {
       children, boundingRef, menuWidth, alwaysHiddenItems, ...customProps
     } = this.props;
-    const visibleChildren = React.Children.toArray(children);
 
-    let hiddenChildren = [];
+    let visibleChildren = children;
+    let hiddenChildren = alwaysHiddenItems || [];
     if (this.hiddenStartIndex >= 0) {
-      hiddenChildren = visibleChildren.splice(this.hiddenStartIndex);
-    }
-    // TODO: validate
-    if (alwaysHiddenItems && alwaysHiddenItems.length > 0) {
-      hiddenChildren = hiddenChildren.concat(alwaysHiddenItems);
+      visibleChildren = React.Children.toArray(children);
+      hiddenChildren = visibleChildren.splice(this.hiddenStartIndex).concat(hiddenChildren);
     }
 
     const theme = this.context;
