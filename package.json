@@ -94,7 +94,8 @@
     "wdio-default": "wdio",
     "wdio-lowlight": "NODE_OPTIONS=--max-old-space-size=2048 THEME=clinical-lowlight-theme wdio",
     "wdio-fusion": "THEME=orion-fusion-theme wdio",
-    "wdio": "npm run wdio-default && npm run wdio-lowlight && npm run wdio-fusion"
+    "wdio": "npm run wdio-default && npm run wdio-lowlight && npm run wdio-fusion",
+    "verify-links": "node scripts/verifyLink.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
@@ -143,5 +144,8 @@
     "webpack-dev-server": "^3.3.1",
     "webpack-merge": "^5.1.4",
     "xfc": "^1.2.1"
+  },
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
   }
 }
