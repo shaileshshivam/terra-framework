@@ -9,12 +9,15 @@ const {
 } = require('terra-dev-site');
 
 const WebpackConfigTerra = require('@cerner/webpack-config-terra');
+const VerifyLinks = require('./scripts/verify-links/verifyLinks');
 /**
 * Generates the file representing app name configuration.
 */
 const devSiteConfig = (env = {}, argv = { p: false }) => {
   const production = argv.p;
   const processPath = process.cwd();
+
+  VerifyLinks.checkLinks();
 
   return {
     entry: TerraDevSiteEntrypoints,
